@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PersistProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectId>0</ProjectId>
+  <ProjectName>HSline316_Logic</ProjectName>
+  <TypeName>MasterSCADA.Project.HMI</TypeName>
+  <ProjectConfiguration>MasterPLC</ProjectConfiguration>
+  <StoreTypeName>FirebirdStore</StoreTypeName>
+  <ProjectChange>2024-04-24T20:25:19.9623068+03:00</ProjectChange>
+  <ProjectVersion>46</ProjectVersion>
+</PersistProjectInfo>
