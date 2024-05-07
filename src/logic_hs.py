@@ -1,10 +1,17 @@
+from opc_ua_operations import *
+
+
 class HS:
-    def __init__(self):
+    client = None
+
+    def __init__(self, client, tag2):
+        self.client = client
+        self.tag2 = tag2
         print("HS created")
 
     @classmethod
     def pushObject(cls):
-        pass
+        write_value_bool('"ns=3;s="Top_secret"."empty"', True, cls.client)
 
     @classmethod
     def gripperOpen(cls):

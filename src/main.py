@@ -1,33 +1,29 @@
 import sys
 from line316 import *
+from opc_ua_operations import *
 from opcua import ua, Server, Client
 
 
+if __name__ == '__main__':
 
-def main():
-    HSline316 = HSline
-    client = Client("opc.tcp://localhost:4840/freeopcua/server/")
+    client = Client("opc.tcp://192.168.3.11:5005")
 
     try:
         # Подключаемся к серверу
         client.connect()
+        root = client.get_root_node()
+        print("root node : " + str(root))
 
-        # Получаем объект Node для тэга, который хотим изменить
-        node = client.get_node("ns=2;i=2")  # Пример адреса тэга
-        # Считываем значение тэга
-        value = node.get_value()
+        tag1 = read_input_value('"ns=3;s="Top_secret"."empty"', client)
+        tag2 = read_input_value('"ns=4;s="Top_secret"."empty"', client)
+        tag3 = read_input_value('"ns=5;s="Top_secret"."empty"', client)
+        tag4 = read_input_value('"ns=6;s="Top_secret"."empty"', client)
+        #...other tags
+        HSline316 = HSline(client, tag1, tag2, tag3, tag4)
+        HSline316.start()
 
-        #HSline316.start(куча тегов)
-
-
-        # Записываем новое значение тэга
-        node.set_value(False)
-
-        # Считываем и выводим новое значение тэга
-        new_value = node.get_value()
-        print(f"Новое значение тэга: {new_value}")
-
-        # Другие операции с тэгами...
+        write_value_bool('"ns=3;s="Top_secret"."empty"',True, client)
+        write_value_int('"ns=3;s="Top_secret"."nr_of_sold_nintendo_switches"',20, client)
 
     finally:
         # Отключаемся от сервера
@@ -37,5 +33,5 @@ def main():
 
 
 
-if __name__ == '__main__':
-    main()
+
+

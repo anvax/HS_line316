@@ -1,7 +1,14 @@
+from opc_ua_operations import *
+
+
 class PackS:
-    def __init__(self):
+    client = None
+
+    def __init__(self, client, tag3):
+        self.client = client
+        self.tag3 = tag3
         print("PackS created")
 
     @classmethod
     def pack(cls):
-        pass
+        write_value_bool('"ns=3;s="Top_secret"."empty"', True, cls.client)

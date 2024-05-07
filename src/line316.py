@@ -5,15 +5,26 @@ from logic_ss import *
 
 
 class HSline:
-    def __init__(self):
+    client = None
+    tag1 = None
+    tag2 = None
+    tag3 = None
+    tag4 = None
+
+    def __init__(self, client, tag1, tag2, tag3, tag4):
+        self.client = client
+        self.tag1 = tag1
+        self.tag2 = tag2
+        self.tag3 = tag3
+        self.tag4 = tag4
         print("HSline created")
 
     @classmethod
     def start(cls):
-        procs = ProcS
-        hs = HS
-        packs = PackS
-        ss = SS
+        procs = ProcS(cls.client, cls.tag1)
+        hs = HS(cls.client, cls.tag2)
+        packs = PackS(cls.client, cls.tag3)
+        ss = SS(cls.client, cls.tag4)
 
         hs.pushObject()
         hs.gripperOpen()
