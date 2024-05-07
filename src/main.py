@@ -21,10 +21,6 @@ if __name__ == '__main__':
         #...other tags
         HSline316 = HSline(client, tag1, tag2, tag3, tag4)
         HSline316.start()
-
-        write_value_bool('"ns=3;s="Top_secret"."empty"',True, client)
-        write_value_int('"ns=3;s="Top_secret"."nr_of_sold_nintendo_switches"',20, client)
-
     finally:
         # Отключаемся от сервера
         client.disconnect()
