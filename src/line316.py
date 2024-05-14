@@ -20,6 +20,15 @@ class HSline:
         print("HSline created")
 
     @classmethod
+    def update_tags(cls):
+        while (1):
+            cls.tag1 = read_input_value('"ns=3;s="Top_secret"."empty"', cls.client)
+            cls.tag2 = read_input_value('"ns=4;s="Top_secret"."empty"', cls.client)
+            cls.tag3 = read_input_value('"ns=5;s="Top_secret"."empty"', cls.client)
+            cls.tag4 = read_input_value('"ns=6;s="Top_secret"."empty"', cls.client)
+            # ...other tags
+
+    @classmethod
     def start(cls):
         procs = ProcS(cls.client, cls.tag1)
         hs = HS(cls.client, cls.tag2)
