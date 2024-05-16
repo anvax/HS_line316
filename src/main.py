@@ -1,13 +1,12 @@
-import sys
 # from line316 import *
-from logic_hs import *
-from logic_ss import *
-from logic_procs import *
-from logic_packs import *
+import asyncio
 from threading import Thread
-from opc_ua_operations import client
+
+from logic_hs import *
+from logic_packs import *
+from logic_procs import *
+from logic_ss import *
 from opc_ua_operations import *
-from opcua import ua, Server, Client
 
 tag1 = None
 tag2 = None
@@ -17,17 +16,13 @@ tag5 = None
 tag6 = None
 step = 1
 
-
-client
-
-def update_tags():
-    while True:
-        # step = read_input_value('"fref"', client)
-        tag6 = read_input_value('ns=4;i=11')
-        # ...other tags
+procs = ProcS(tag1, tag2, tag3, tag4, tag5, tag6)
+hs = HS(client, tag2)
+packs = PackS(client, tag3)
+ss = SS(client, tag4)
 
 
-def process():
+async def process():
     global step
     while step == 1:
         while not procs.temp:
@@ -35,27 +30,19 @@ def process():
             step = 2
 
 
-if __name__ == '__main__':
-
+def main():
     try:
         # Подключаемся к серверу
         client.connect()
-        node = client.get_node('ns=4;i=11')
-        print(node.server)
-        print(node.nodeid)
-        procs = ProcS(tag1, tag2, tag3, tag4, tag5, tag6)
-        hs = HS(client, tag2)
-        packs = PackS(client, tag3)
-        ss = SS(client, tag4)
-
-        t1 = Thread(target=update_tags)
+        # node = client.get_node('ns=4;i=11')
+        # print(node.get_value())
+        asyncio.run(process())
         # t2 = Thread(target=process)
-        t1.start()
+        # t1.start()
         # t2.start()
-    except Exception as e:
-        print(2)
-        print(e)
-        # print(1)
     finally:
         # Отключаемся от сервера
         client.disconnect()
+
+if __name__ == '__main__':
+    main()

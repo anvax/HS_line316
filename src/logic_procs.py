@@ -1,3 +1,5 @@
+import time
+
 from opc_ua_operations import client
 from opc_ua_operations import *
 
@@ -12,6 +14,7 @@ class ProcS:
     ColorDetection = None
     RedAndSilvery = None
     Silvery = None
+    rotate = False
 
     # Output tags:
     Spin = None
@@ -27,11 +30,15 @@ class ProcS:
 
     @classmethod
     def start(cls):
-        # spin
-        try:
-            write_value_bool("ns=4;i=11", False)
+        serv_node = client.get_node('ns=4;i=11')
+        # print('Carousel Rotation: ', serv_node.get_value())
+        cls.CarouselRotation = client.get_node('ns=4;i=3').get_value()
+        # print(cls.CarouselRotation)
 
-            if cls.CarouselRotation:
+        try:
+            # print(cls.counter)
+            print(cls.rotate)
+            if cls.CarouselRotation and cls.rotate:
                 cls.counter += 1
                 if cls.ColorDetection:
                     # m5 down
@@ -53,12 +60,20 @@ class ProcS:
                             cls.color = "black"
                 if cls.counter == 5:
                     # drill
-                    write_value_bool()
+                    pass
+                    # write_value_bool()
+            elif cls.CarouselRotation:
+                write_value_bool("ns=4;i=11", True)
+                cls.rotate = True
+                time.sleep(0.3)
+
+
             if cls.counter == 6:
                 cls.temp = 1
                 cls.counter = 0
                 # no spin
-                write_value_bool()
+                write_value_bool("ns=4;i=11", False)
+                cls.rotate = False
         except Exception as e:
-            # print(e)
-            pass
+            print(e)
+            # pass
