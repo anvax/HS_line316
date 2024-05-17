@@ -14,6 +14,7 @@ class ProcS:
     Silvery = None
     rotate = False
     drill = False
+    hole = False
 
     # Output tags:
     Spin = None
@@ -32,20 +33,16 @@ class ProcS:
         try:
             # print(cls.counter)
             #print(cls.rotate)
-            if cls.CarouselRotation and cls.rotate and not cls.drill:
-                write_value_bool("ns=4;i=11", True)
+            if cls.CarouselRotation and cls.rotate and not cls.finished:
                 cls.counter += 1
-                if cls.ColorDetection:
+                if cls.counter == 3:
                     # m5 down
-                    write_value_bool()
-                    if cls.M5:
-                        pass
-                        # there are hole in object
-                    else:
-                        pass
-                        # no hole
-                    # m5 up
-                    write_value_bool()
+                    time.sleep(0.1)
+                    write_value_bool("ns=4;i=11", False)
+                    time.sleep(0.4)
+                    cls.RedAndSilvery = read_input_value('')
+                    cls.Silvery = read_input_value('')
+
                     if cls.RedAndSilvery and cls.Silvery:
                         cls.color = "silver"
                     else:
@@ -53,33 +50,51 @@ class ProcS:
                             cls.color = "red"
                         else:
                             cls.color = "black"
-                if cls.counter == 5:
-                    # drill
-                    cls.drill = True
+
+                    #M5 down
+                    write_value_bool("", True)
+                    time.sleep(0.5)
+                    cls.M5 = read_input_value('')
+
+                    if cls.M5:
+                        cls.hole = True
+                    else:
+                        cls.hole = False
+                    # m5 up
+                    write_value_bool("Опустить M5",  False)
+                    write_value_bool('Поднять M5', True)
+                    time.sleep(0.5)
+                    write_value_bool("ns=4;i=11", True)
+
+                elif cls.counter == 4:
+                    # Провернуть до положения дрели
+                    time.sleep(0.2)
                     write_value_bool("ns=4;i=11", False)
-                    write_value_bool("ns=4;i=13", False)
-                    write_value_bool("ns=4;i=12", True)
-                    #write_value_bool("ns=4;i=14", True)
-                    write_value_bool("ns=4;i=10", True)
                     time.sleep(1)
-                    write_value_bool("ns=4;i=10", False)
-                    write_value_bool("ns=4;i=12", False)
-                    write_value_bool("ns=4;i=13", True)
-                    cls.drill = False
-                    #write_value_bool("ns=4;i=11", )
-                    # write_value_bool()
-            elif cls.CarouselRotation:
+                    if not cls.hole:
+                        # drill
+                        write_value_bool("ns=4;i=12", True) # Opuskanie dreli
+                        time.sleep(0.6)
+                        write_value_bool("ns=4;i=12", False)  # Opuskanie dreli
+                        write_value_bool("ns=4;i=10", True) # Sverlenie
+                        time.sleep(1)
+                        write_value_bool("ns=4;i=10", False) # Sverlenie
+
+                        write_value_bool("ns=4;i=13", True)
+                        time.sleep(0.6)
+
+                    write_value_bool("ns=4;i=11", True)
+                    time.sleep(0.2)
+                    write_value_bool("ns=4;i=11", False)
+                    cls.counter = 0
+                    cls.finished = True
+                    cls.rotate = False
+
+            elif cls.CarouselRotation and not cls.finished:
                 write_value_bool("ns=4;i=11", True)
                 cls.rotate = True
                 time.sleep(0.3)
 
-            if cls.counter == 6:
-                write_value_bool("ns=4;i=10", False)
-                cls.finished = 1
-                cls.counter = 0
-                # no spin
-                write_value_bool("ns=4;i=11", False)
-                cls.rotate = False
         except Exception as e:
             print(e)
             # pass

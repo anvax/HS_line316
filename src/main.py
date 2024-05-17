@@ -8,7 +8,7 @@ from logic_procs import *
 from logic_ss import *
 from opc_ua_operations import *
 
-step = client.get_node('ns=4;i=3').get_value()
+step: int = client.get_node('ns=4;i=3').get_value()
 
 procs = ProcS()
 hs = HS()
@@ -20,60 +20,66 @@ async def gripper_put_obj_on_left():
     global step
     while step == 0:
         step = client.get_node('ns=4;i=3').get_value()
-        while not hs.grLeftFinished:
+        if not hs.grLeftFinished:
             hs.gr_left_start()
+        else:
             write_value_int("ns=4;i=3", 1)
-            step = client.get_node('ns=4;i=3').get_value()
+            step = 1
 
 
 async def process():
     global step
     while step == 1:
         step = client.get_node('ns=4;i=3').get_value()
-        while not procs.finished:
+        if not procs.finished:
             procs.start()
+        else:
             write_value_int("ns=4;i=3", 2)
-            step = client.get_node('ns=4;i=3').get_value()
+            step = 2
 
 
 async def gripper_move_obj_to_pack():
     global step
     while step == 2:
         step = client.get_node('ns=4;i=3').get_value()
-        while not hs.grMidFinished:
+        if not hs.grMidFinished:
             hs.gr_mid_start()
+        else:
             write_value_int("ns=4;i=3", 3)
-            step = client.get_node('ns=4;i=3').get_value()
+            step = 3
 
 
 async def packing():
     global step
     while step == 3:
         step = client.get_node('ns=4;i=3').get_value()
-        while not procs.finished:
+        if not packs.finished:
             packs.start()
+        else:
             write_value_int("ns=4;i=3", 4)
-            step = client.get_node('ns=4;i=3').get_value()
+            step = 4
 
 
 async def gripper_move_obj_to_sort():
     global step
     while step == 4:
         step = client.get_node('ns=4;i=3').get_value()
-        while not procs.finished:
+        if not hs.grRightFinished:
             hs.gr_right_start()
+        else:
             write_value_int("ns=4;i=3", 5)
-            step = client.get_node('ns=4;i=3').get_value()
+            step = 5
 
 
 async def sorting():
     global step
     while step == 5:
         step = client.get_node('ns=4;i=3').get_value()
-        while not procs.finished:
+        if not ss.finished:
             ss.start()
+        else:
             write_value_int("ns=4;i=3", 0)
-            step = client.get_node('ns=4;i=3').get_value()
+            step = 0
 
 
 def main():
