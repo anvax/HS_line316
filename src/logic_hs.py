@@ -2,41 +2,21 @@ from opc_ua_operations import *
 
 
 class HS:
-    client = None
+    grLeftFinished = 0
+    grMidFinished = 0
+    grRightFinished = 0
 
-    def __init__(self, client, tag2):
-        self.client = client
-        self.tag2 = tag2
+    def __init__(self):
         print("HS created")
 
     @classmethod
-    def pushObject(cls):
-        write_value_bool('"ns=3;s="Top_secret"."empty"', True, cls.client)
+    def gr_left_start(cls):
+        cls.grLeftFinished = 1
 
     @classmethod
-    def gripperOpen(cls):
-        pass
+    def gr_mid_start(cls):
+        cls.grMidFinished = 1
 
     @classmethod
-    def gripperDown(cls):
-        pass
-
-    @classmethod
-    def gripperClose(cls):
-        pass
-
-    @classmethod
-    def gripperUp(cls):
-        pass
-
-    @classmethod
-    def gripperMoveLeft(cls):
-        pass
-
-    @classmethod
-    def moveToPackS(cls):
-        pass
-
-    @classmethod
-    def moveRight(cls):
-        pass
+    def gr_right_start(cls):
+        cls.grRightFinished = 1

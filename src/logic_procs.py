@@ -1,13 +1,11 @@
 import time
-
-from opc_ua_operations import client
 from opc_ua_operations import *
 
 
 class ProcS:
     color = None
     counter = 0
-    temp = 0
+    finished = 0
     # Input tags:
     CarouselRotation = None
     M5 = None
@@ -15,18 +13,12 @@ class ProcS:
     RedAndSilvery = None
     Silvery = None
     rotate = False
-    drill=False
+    drill = False
 
     # Output tags:
     Spin = None
 
-    def __init__(self, tag1, tag2, tag3, tag4, tag5, tag6):
-        self.CarouselRotation = tag1
-        self.M5 = tag2
-        self.ColorDetection = tag3
-        self.RedAndSilvery = tag4
-        self.Silvery = tag5
-        self.Spin = tag6
+    def __init__(self):
         print("ProcS created")
 
     @classmethod
@@ -39,8 +31,9 @@ class ProcS:
 
         try:
             # print(cls.counter)
-            print(cls.rotate)
+            #print(cls.rotate)
             if cls.CarouselRotation and cls.rotate and not cls.drill:
+                write_value_bool("ns=4;i=11", True)
                 cls.counter += 1
                 if cls.ColorDetection:
                     # m5 down
@@ -62,7 +55,7 @@ class ProcS:
                             cls.color = "black"
                 if cls.counter == 5:
                     # drill
-                    cls.drill=True
+                    cls.drill = True
                     write_value_bool("ns=4;i=11", False)
                     write_value_bool("ns=4;i=13", False)
                     write_value_bool("ns=4;i=12", True)
@@ -80,10 +73,9 @@ class ProcS:
                 cls.rotate = True
                 time.sleep(0.3)
 
-
             if cls.counter == 6:
                 write_value_bool("ns=4;i=10", False)
-                cls.temp = 1
+                cls.finished = 1
                 cls.counter = 0
                 # no spin
                 write_value_bool("ns=4;i=11", False)
