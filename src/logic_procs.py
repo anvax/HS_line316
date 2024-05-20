@@ -3,98 +3,100 @@ from opc_ua_operations import *
 
 
 class ProcS:
-    color = None
+    # additional variables
+    color = ''
     counter = 0
-    finished = 0
-    # Input tags:
-    CarouselRotation = None
-    M5 = None
-    ColorDetection = None
-    RedAndSilvery = None
-    Silvery = None
+    finished = False
     rotate = False
-    drill = False
     hole = False
+    carousel_rotation = False
+
+    # Input tags:
+    carousel_rotation_tag = 'ns=4;i=3'
+    m5_tag = ''
+    red_and_silvery = ''
+    silvery = ''
 
     # Output tags:
-    Spin = None
+    drill_down = "ns=4;i=12"
+    drill_up = "ns=4;i=13"
+    drilling = "ns=4;i=10"
+    carousel_rotate = "ns=4;i=11"
+    m5_up_down = 'ns=4;i=15'
+    m4_flag = 'ns=4;i=14'
 
     def __init__(self):
         print("ProcS created")
 
     @classmethod
     def start(cls):
-        serv_node = client.get_node('ns=4;i=11')
-        # print('Carousel Rotation: ', serv_node.get_value())
-        cls.CarouselRotation = client.get_node('ns=4;i=3').get_value()
-        #cls.ColorDetection=client.get_node('ns=4,i=11').get_value()
-        # print(cls.CarouselRotation)
+        cls.carousel_rotation = client.get_node(cls.carousel_rotation_tag).get_value()
+        while not cls.finished:
+            try:
+                if cls.carousel_rotation and cls.rotate and not cls.finished:
+                    cls.counter += 1
+                    if cls.counter == 3:
+                        # rotate to color detection
+                        time.sleep(0.1)
+                        write_value_bool(cls.carousel_rotate, False)
+                        time.sleep(1)
+                        cls.red_and_silvery = read_input_value(cls.red_and_silvery)
+                        cls.silvery = read_input_value(cls.silvery)
 
-        try:
-            # print(cls.counter)
-            #print(cls.rotate)
-            if cls.CarouselRotation and cls.rotate and not cls.finished:
-                cls.counter += 1
-                if cls.counter == 3:
-                    # m5 down
-                    time.sleep(0.1)
-                    write_value_bool("ns=4;i=11", False)
-                    time.sleep(0.4)
-                    cls.RedAndSilvery = read_input_value('')
-                    cls.Silvery = read_input_value('')
-
-                    if cls.RedAndSilvery and cls.Silvery:
-                        cls.color = "silver"
-                    else:
-                        if cls.RedAndSilvery:
+                        if cls.red_and_silvery and cls.silvery:
+                            cls.color = "silver"
+                        elif cls.red_and_silvery:
                             cls.color = "red"
                         else:
                             cls.color = "black"
 
-                    #M5 down
-                    write_value_bool("", True)
-                    time.sleep(0.5)
-                    cls.M5 = read_input_value('')
+                        # m5 down
+                        write_value_bool(cls.m5_up_down, True)
+                        time.sleep(0.5)
+                        cls.M5 = read_input_value(cls.m5_tag)
 
-                    if cls.M5:
-                        cls.hole = True
-                    else:
-                        cls.hole = False
-                    # m5 up
-                    write_value_bool("Опустить M5",  False)
-                    write_value_bool('Поднять M5', True)
-                    time.sleep(0.5)
-                    write_value_bool("ns=4;i=11", True)
+                        if cls.M5:
+                            cls.hole = True
+                        else:
+                            cls.hole = False
 
-                elif cls.counter == 4:
-                    # Провернуть до положения дрели
-                    time.sleep(0.2)
-                    write_value_bool("ns=4;i=11", False)
-                    time.sleep(1)
-                    if not cls.hole:
-                        # drill
-                        write_value_bool("ns=4;i=12", True) # Opuskanie dreli
-                        time.sleep(0.6)
-                        write_value_bool("ns=4;i=12", False)  # Opuskanie dreli
-                        write_value_bool("ns=4;i=10", True) # Sverlenie
+                        # m5 up
+                        write_value_bool(cls.m5_up_down,  False)
+                        time.sleep(0.5)
+                        write_value_bool("ns=4;i=11", True)
+
+                    elif cls.counter == 4:
+                        # Rotate to drill place
+                        time.sleep(0.2)
+                        write_value_bool("ns=4;i=11", False)
                         time.sleep(1)
-                        write_value_bool("ns=4;i=10", False) # Sverlenie
 
-                        write_value_bool("ns=4;i=13", True)
-                        time.sleep(0.6)
+                        # drill the puck
+                        if not cls.hole:
+                            # drill
+                            write_value_bool(cls.drill_down, True)
+                            time.sleep(0.6)
+                            write_value_bool(cls.drill_down, False)
+                            write_value_bool(cls.drilling, True)
+                            time.sleep(1)
+                            write_value_bool(cls.drilling, False)
 
-                    write_value_bool("ns=4;i=11", True)
-                    time.sleep(0.2)
-                    write_value_bool("ns=4;i=11", False)
-                    cls.counter = 0
-                    cls.finished = True
-                    cls.rotate = False
+                            write_value_bool(cls.drill_up, True)
+                            time.sleep(0.6)
+                            write_value_bool(cls.drill_up, False)
 
-            elif cls.CarouselRotation and not cls.finished:
-                write_value_bool("ns=4;i=11", True)
-                cls.rotate = True
-                time.sleep(0.3)
+                        # rotate carousel to start place
+                        write_value_bool(cls.carousel_rotate, True)
+                        time.sleep(0.2)
+                        write_value_bool(cls.carousel_rotate, False)
+                        cls.counter = 0
+                        cls.rotate = False
+                        cls.finished = True
 
-        except Exception as e:
-            print(e)
-            # pass
+                elif cls.carousel_rotation and not cls.finished:
+                    write_value_bool(cls.carousel_rotate, True)
+                    cls.rotate = True
+                    time.sleep(0.3)
+
+            except Exception as e:
+                print(e)

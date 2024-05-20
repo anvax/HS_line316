@@ -1,4 +1,3 @@
-# from line316 import *
 import asyncio
 from threading import Thread
 
@@ -8,7 +7,7 @@ from logic_procs import *
 from logic_ss import *
 from opc_ua_operations import *
 
-step: int = client.get_node('ns=4;i=3').get_value()
+step = client.get_node(ProcS.carousel_rotation_tag).get_value()
 
 procs = ProcS()
 hs = HS()
@@ -16,89 +15,71 @@ packs = PackS()
 ss = SS()
 
 
-async def gripper_put_obj_on_left():
+def gripper_put_obj_on_left():
     global step
-    while step == 0:
-        step = client.get_node('ns=4;i=3').get_value()
-        if not hs.grLeftFinished:
-            hs.gr_left_start()
-        else:
-            write_value_int("ns=4;i=3", 1)
-            step = 1
+    if not hs.gr_move_to_carousel and step == 0:
+        hs.gr_move_puck_to_carousel()
+    else:
+        # write_value_int(ProcS.carousel_rotation_tag, 1)
+        step = 1
+        await process()
 
 
-async def process():
+def process():
     global step
-    while step == 1:
-        step = client.get_node('ns=4;i=3').get_value()
-        if not procs.finished:
-            procs.start()
-        else:
-            write_value_int("ns=4;i=3", 2)
-            step = 2
+    if not procs.finished and step == 1:
+        procs.start()
+    else:
+        # write_value_int("ns=4;i=3", 2)
+        step = 2
+        await gripper_move_obj_to_pack()
 
 
-async def gripper_move_obj_to_pack():
+def gripper_move_obj_to_pack():
     global step
-    while step == 2:
-        step = client.get_node('ns=4;i=3').get_value()
-        if not hs.grMidFinished:
-            hs.gr_mid_start()
-        else:
-            write_value_int("ns=4;i=3", 3)
-            step = 3
+    if not hs.gr_move_to_pack and step == 2:
+        hs.gr_move_puck_to_pack()
+    else:
+        # write_value_int("ns=4;i=3", 3)
+        step = 3
+        await packing()
 
 
-async def packing():
+def packing():
     global step
-    while step == 3:
-        step = client.get_node('ns=4;i=3').get_value()
-        if not packs.finished:
-            packs.start()
-        else:
-            write_value_int("ns=4;i=3", 4)
-            step = 4
+    if not packs.finished and step == 3:
+        packs.start()
+    else:
+        # write_value_int("ns=4;i=3", 4)
+        step = 4
+        await gripper_move_obj_to_sort()
 
 
-async def gripper_move_obj_to_sort():
+def gripper_move_obj_to_sort():
     global step
-    while step == 4:
-        step = client.get_node('ns=4;i=3').get_value()
-        if not hs.grRightFinished:
-            hs.gr_right_start()
-        else:
-            write_value_int("ns=4;i=3", 5)
-            step = 5
+    if not hs.gr_move_to_conveyor and step == 4:
+        hs.gr_move_puck_to_conveyor()
+    else:
+        # write_value_int("ns=4;i=3", 5)
+        step = 5
+        await sorting()
 
 
-async def sorting():
+def sorting():
     global step
-    while step == 5:
-        step = client.get_node('ns=4;i=3').get_value()
-        if not ss.finished:
-            ss.start()
-        else:
-            write_value_int("ns=4;i=3", 0)
-            step = 0
+    if not ss.finished and step == 5:
+        ss.start()
+    else:
+        # write_value_int("ns=4;i=3", 0)
+        step = 0
 
 
 def main():
     try:
         # Подключаемся к серверу
         client.connect()
-        # node = client.get_node('ns=4;i=11')
-        # print(node.get_value())
+        gripper_put_obj_on_left()
 
-        asyncio.run(gripper_put_obj_on_left())
-        asyncio.run(process())
-        asyncio.run(gripper_move_obj_to_pack())
-        asyncio.run(packing())
-        asyncio.run(gripper_move_obj_to_sort())
-        asyncio.run(sorting())
-
-        # t2 = Thread(target=process)
-        # t1.start()
-        # t2.start()
     finally:
         # disconnecting
         client.disconnect()
