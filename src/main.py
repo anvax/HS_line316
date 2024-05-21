@@ -22,7 +22,7 @@ def gripper_put_obj_on_left():
     else:
         # write_value_int(ProcS.carousel_rotation_tag, 1)
         step = 1
-        await process()
+        process()
 
 
 def process():
@@ -32,7 +32,7 @@ def process():
     else:
         # write_value_int("ns=4;i=3", 2)
         step = 2
-        await gripper_move_obj_to_pack()
+        gripper_move_obj_to_pack()
 
 
 def gripper_move_obj_to_pack():
@@ -42,7 +42,7 @@ def gripper_move_obj_to_pack():
     else:
         # write_value_int("ns=4;i=3", 3)
         step = 3
-        await packing()
+        packing()
 
 
 def packing():
@@ -52,7 +52,7 @@ def packing():
     else:
         # write_value_int("ns=4;i=3", 4)
         step = 4
-        await gripper_move_obj_to_sort()
+        gripper_move_obj_to_sort()
 
 
 def gripper_move_obj_to_sort():
@@ -62,7 +62,7 @@ def gripper_move_obj_to_sort():
     else:
         # write_value_int("ns=4;i=3", 5)
         step = 5
-        await sorting()
+        sorting()
 
 
 def sorting():

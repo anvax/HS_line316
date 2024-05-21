@@ -1,3 +1,5 @@
+import time
+
 from opc_ua_operations import *
 
 
@@ -39,23 +41,23 @@ class HS:
         # drop puck
         # "drop puck" code
 
-        gr_down()
-        gr_up()
+        cls.gr_down()
+        cls.gr_up()
 
         # graider move left
         write_value_bool(cls.graider_move_left, True)
         time.sleep(3)
         write_value_bool(cls.graider_move_left, False)
 
-        gr_down()
-        gr_up()
+        cls.gr_down()
+        cls.gr_up()
 
         cls.gr_move_to_carousel = True
 
     @classmethod
     def gr_move_puck_to_pack(cls):
-        gr_down()
-        gr_up()
+        cls.gr_down()
+        cls.gr_up()
 
         graider_middle_sensor = read_input_value(cls.graider_pack_sensor)
 
@@ -67,24 +69,24 @@ class HS:
 
         write_value_bool(cls.graider_move_right, False)
 
-        gr_down()
-        gr_up()
+        cls.gr_down()
+        cls.gr_up()
 
         cls.gr_move_to_pack = True
 
     @classmethod
     def gr_move_puck_to_conveyor(cls):
 
-        gr_down()
-        gr_up()
+        cls.gr_down()
+        cls.gr_up()
 
         # graider move right
         write_value_bool(cls.graider_move_right, True)
         time.sleep(3)
         write_value_bool(cls.graider_move_right, False)
 
-        gr_down()
-        gr_up()
+        cls.gr_down()
+        cls.gr_up()
 
         graider_left_sensor = read_input_value(cls.graider_start_sensor)
 
