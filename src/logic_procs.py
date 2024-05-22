@@ -18,12 +18,12 @@ class ProcS:
     silvery = ''
 
     # Output tags:
-    drill_down = "ns=4;i=12"
-    drill_up = "ns=4;i=13"
     drilling = "ns=4;i=10"
     carousel_rotate = "ns=4;i=11"
-    m5_up_down = 'ns=4;i=15'
-    m4_flag = 'ns=4;i=14'
+    drill_down = "ns=4;i=12"
+    drill_up = "ns=4;i=13"
+    m4_toggle = 'ns=4;i=14'
+    m5_toggle = 'ns=4;i=15'
 
     def __init__(self):
         print("ProcS created")
