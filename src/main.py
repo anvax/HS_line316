@@ -7,70 +7,76 @@ from logic_procs import *
 from logic_ss import *
 from opc_ua_operations import *
 
-step = client.get_node(ProcS.carousel_rotation_tag).get_value()
 
 procs = ProcS()
 hs = HS()
 packs = PackS()
 ss = SS()
+step_tag = ''
+start_tag = ''
+
+
+async def start():
+    step = read_input_value(step_tag)
+    step_program = {
+        0: gripper_put_obj_on_left,
+        1: process,
+        2: gripper_move_obj_to_pack,
+        3: packing,
+        4: gripper_move_obj_to_sort,
+        5: sorting,
+    }
+    while True:
+        start_btn = read_input_value(start_tag)
+        if start_btn:
+            write_value_bool(start_tag, False)
+            step_program[step]()
 
 
 def gripper_put_obj_on_left():
-    global step
-    if not hs.gr_move_to_carousel and step == 0:
+    if not hs.gr_move_to_carousel:
         hs.gr_move_puck_to_carousel()
-    else:
-        # write_value_int(ProcS.carousel_rotation_tag, 1)
-        step = 1
-        await process()
+        step = read_input_value(step_tag)
+        write_value_int(step_tag, step+1)
+        process()
 
 
 def process():
-    global step
-    if not procs.finished and step == 1:
-        procs.start()
-    else:
-        # write_value_int("ns=4;i=3", 2)
-        step = 2
-        await gripper_move_obj_to_pack()
+    procs.start()
+    step = read_input_value(step_tag)
+    write_value_int(step_tag, step+1)
+    gripper_move_obj_to_pack()
 
 
 def gripper_move_obj_to_pack():
-    global step
-    if not hs.gr_move_to_pack and step == 2:
+    if not hs.gr_move_to_pack:
         hs.gr_move_puck_to_pack()
-    else:
-        # write_value_int("ns=4;i=3", 3)
-        step = 3
-        await packing()
+        step = read_input_value(step_tag)
+        write_value_int(step_tag, step+1)
+        packing()
 
 
 def packing():
-    global step
-    if not packs.finished and step == 3:
+    if not packs.finished:
         packs.start()
-    else:
-        # write_value_int("ns=4;i=3", 4)
-        step = 4
-        await gripper_move_obj_to_sort()
+        step = read_input_value(step_tag)
+        write_value_int(step_tag, step+1)
+        gripper_move_obj_to_sort()
 
 
 def gripper_move_obj_to_sort():
-    global step
-    if not hs.gr_move_to_conveyor and step == 4:
+    if not hs.gr_move_to_conveyor:
         hs.gr_move_puck_to_conveyor()
-    else:
-        # write_value_int("ns=4;i=3", 5)
-        step = 5
-        await sorting()
+        step = read_input_value(step_tag)
+        write_value_int(step_tag, step+1)
+        sorting()
 
 
 def sorting():
-    global step
-    if not ss.finished and step == 5:
+    if not ss.finished:
         ss.start()
-    else:
-        # write_value_int("ns=4;i=3", 0)
+        step = read_input_value(step_tag)
+        write_value_int(step_tag, 0)
         step = 0
 
 
@@ -78,8 +84,8 @@ def main():
     try:
         # Подключаемся к серверу
         client.connect()
-        gripper_put_obj_on_left()
-
+        # gripper_put_obj_on_left()
+        asyncio.create_task(start())
     finally:
         # disconnecting
         client.disconnect()

@@ -1,4 +1,4 @@
-from opcua import ua, Server, Client
+from opcua import ua, Client
 
 client = Client("opc.tcp://10.160.160.61:4840")
 
