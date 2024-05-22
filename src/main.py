@@ -83,9 +83,10 @@ async def main():
         client.connect()
         # gripper_put_obj_on_left()
         # await asyncio.create_task(start())
-        process()
+        # process()
         # sorting()
         # gripper_move_obj_to_pack()
+        gripper_move_obj_to_sort()
     finally:
         # disconnecting
         client.disconnect()
