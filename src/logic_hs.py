@@ -1,3 +1,5 @@
+import time
+
 from opc_ua_operations import *
 import time
 
