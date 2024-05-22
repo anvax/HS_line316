@@ -30,5 +30,4 @@ class PackS:
         write_value_bool(cls.bend, False)
         time.sleep(1)
 
-
         cls.finished = 1

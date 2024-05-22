@@ -51,7 +51,7 @@ class ProcS:
                             cls.color = "black"
 
                         # m5 down
-                        write_value_bool(cls.m5_up_down, True)
+                        write_value_bool(cls.m5_toggle, True)
                         time.sleep(0.5)
                         cls.M5 = read_input_value(cls.m5_tag)
 
@@ -61,7 +61,7 @@ class ProcS:
                             cls.hole = False
 
                         # m5 up
-                        write_value_bool(cls.m5_up_down,  False)
+                        write_value_bool(cls.m5_toggle,  False)
                         time.sleep(0.5)
                         write_value_bool("ns=4;i=11", True)
 
