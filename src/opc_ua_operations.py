@@ -21,3 +21,4 @@ def write_value_bool(node_id, value):
     client_node_value = value
     client_node_dv = ua.DataValue(ua.Variant(client_node_value, ua.VariantType.Boolean))
     client_node.set_value(client_node_dv)
+
