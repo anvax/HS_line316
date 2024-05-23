@@ -6,13 +6,12 @@ from logic_procs import *
 from logic_ss import *
 from opc_ua_operations import *
 
-
 procs = ProcS()
 hs = HS()
 packs = PackS()
 ss = SS()
 step_tag = ''
-start_tag = 'ns=4;i=45'
+start_tag = 'ns=4;i=27'
 
 
 async def start():
@@ -45,48 +44,49 @@ def process():
     procs.start()
     # step = read_input_value(step_tag)
     # write_value_int(step_tag, step+1)
-    # gripper_move_obj_to_pack()
+    gripper_move_obj_to_pack()
 
 
 def gripper_move_obj_to_pack():
     hs.gr_move_puck_to_pack()
     # step = read_input_value(step_tag)
     # write_value_int(step_tag, step+1)
-    # packing()
+    packing()
 
 
 def packing():
-    if not packs.finished:
-        packs.start()
-        step = read_input_value(step_tag)
-        write_value_int(step_tag, step+1)
-        gripper_move_obj_to_sort()
+    packs.start()
+    gripper_move_obj_to_sort()
 
 
 def gripper_move_obj_to_sort():
     hs.gr_move_puck_to_conveyor()
-    # step = read_input_value(step_tag)
-    # write_value_int(step_tag, step+1)
     sorting()
 
 
 def sorting():
     ss.start()
+    gripper_move_to_start()
     # step = read_input_value(step_tag)
     # write_value_int(step_tag, 0)
     # step = 0
+
+
+def gripper_move_to_start():
+    hs.gr_move_to_start()
 
 
 async def main():
     try:
         # Подключаемся к серверу
         client.connect()
-        # gripper_put_obj_on_left()
+        gripper_put_obj_on_left()
+        #packing()
         # await asyncio.create_task(start())
         # process()
         # sorting()
         # gripper_move_obj_to_pack()
-        gripper_move_obj_to_sort()
+        # gripper_move_obj_to_sort()
     finally:
         # disconnecting
         client.disconnect()

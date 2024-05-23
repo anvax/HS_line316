@@ -10,16 +10,18 @@ class HS:
     gr_move_to_conveyor = False
 
     # input tags
-    gripper_start_sensor = ''
-    gripper_pack_sensor = 'ns=4;i=24'
-    gripper_conveyor_sensor = ''
+    gripper_start_sensor = 'ns=4;i=31'
+    gripper_pack_sensor = 'ns=4;i=30'
+    gripper_conveyor_sensor = 'ns=4;i=32'
 
     # output tags
-    gripper_toggle_up_down = 'ns=4;i=33'
-    gripper_open = 'ns=4;i=34'
-    gripper_move_left = 'ns=4;i=32'
-    gripper_move_right = 'ns=4;i=31'
-    drop_puck = 'ns=4;i=35'
+    push_box = 'ns=4;i=43'
+    fix_box_upper_side = 'ns=4;i=44'
+    gripper_toggle_up_down = 'ns=4;i=39'
+    gripper_open = 'ns=4;i=40'
+    gripper_move_left = 'ns=4;i=38'
+    gripper_move_right = 'ns=4;i=37'
+    drop_puck = 'ns=4;i=41'
 
     def __init__(self):
         print("HS created")
@@ -80,10 +82,17 @@ class HS:
 
         write_value_bool(cls.gripper_move_right, False)
 
+        write_value_bool(cls.push_box, True)
+        time.sleep(2)
+        write_value_bool(cls.push_box, False)
+        time.sleep(2)
+        write_value_bool(cls.fix_box_upper_side, True)
+
         cls.gr_down(2)
         write_value_bool(cls.gripper_open, True)
         time.sleep(0.3)
         cls.gr_up()
+        time.sleep(1)
         write_value_bool(cls.gripper_open, False)
         #
         # cls.gr_move_to_pack = True
@@ -96,7 +105,7 @@ class HS:
         write_value_bool(cls.gripper_open, False)
         time.sleep(0.3)
         cls.gr_up()
-
+        time.sleep(1)
         # gripper move right
         write_value_bool(cls.gripper_move_right, True)
         time.sleep(2)
@@ -117,3 +126,16 @@ class HS:
         # write_value_bool(cls.gripper_move_left, False)
         #
         # cls.gr_move_to_conveyor = True
+
+    @classmethod
+    def gr_move_to_start(cls):
+
+        gripper_start_sensor = read_input_value(cls.gripper_start_sensor)
+
+        # gripper move left
+        write_value_bool(cls.gripper_move_left, True)
+
+        while not gripper_start_sensor:
+            gripper_start_sensor = read_input_value(cls.gripper_start_sensor)
+
+        write_value_bool(cls.gripper_move_left, False)

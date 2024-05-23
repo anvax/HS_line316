@@ -11,9 +11,9 @@ class ProcS:
     carousel_rotation = False
     M5 = False
 
-    red_tag = 'ns=4;i=42'
-    silver_tag = 'ns=4;i=44'
-    black_tag = 'ns=4;i=43'
+    red_tag = 'ns=4;i=24'
+    silver_tag = 'ns=4;i=26'
+    black_tag = 'ns=4;i=25'
 
     # Input tags:
     carousel_rotation_tag = 'ns=4;i=3'
