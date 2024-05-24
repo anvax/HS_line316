@@ -15,15 +15,6 @@ start_tag = 'ns=4;i=27'
 
 
 async def start():
-    # step = read_input_value(step_tag)
-    # step_program = {
-    #     0: gripper_put_obj_on_left,
-    #     1: process,
-    #     2: gripper_move_obj_to_pack,
-    #     3: packing,
-    #     4: gripper_move_obj_to_sort,
-    #     5: sorting,
-    # }
     write_value_bool('ns=4;i=35', True)
     while True:
         start_btn = read_input_value(start_tag)
@@ -50,7 +41,6 @@ def gripper_move_obj_to_pack():
 
 def packing():
     packs.start()
-    time.sleep(3)
     gripper_move_obj_to_sort()
 
 
@@ -72,15 +62,7 @@ async def main():
     try:
         # Подключаемся к серверу
         client.connect()
-        time.sleep(6)
         gripper_put_obj_on_left()
-        # packing()
-        # await asyncio.create_task(start())
-        # sorting()
-        # process()
-        # gripper_move_obj_to_pack()
-        # gripper_move_obj_to_sort()
-        # gripper_move_to_start()
     finally:
         # disconnecting
         client.disconnect()
