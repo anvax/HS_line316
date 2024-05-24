@@ -11,11 +11,12 @@ class SS:
     silver = False
     black = False
     # input
-    box_is_down_tag = 'ns=4;i=9'
-    box_on_conveyor_tag = 'ns=4;i=10'
+    box_on_conveyor_tag = 'ns=4;i=9'
+    box_is_down_tag = 'ns=4;i=10'
     red_tag = 'ns=4;i=24'
-    silver_tag = 'ns=4;i=26'
     black_tag = 'ns=4;i=25'
+    silver_tag = 'ns=4;i=26'
+
     # output
     move_conveyor_right = 'ns=4;i=19'
     move_conveyor_left = 'ns=4;i=20'
@@ -32,13 +33,14 @@ class SS:
         cls.red = read_input_value(cls.red_tag)
         cls.silver = read_input_value(cls.silver_tag)
         cls.black = read_input_value(cls.black_tag)
-        cls.red = True
+        cls.red = read_input_value(cls.red_tag)
+
+        print(cls.box_on_conveyor)
+
         if cls.box_on_conveyor:
             if cls.red:
                 write_value_bool(cls.push_red, True)
-                write_value_bool(cls.push_silver, False)
             elif cls.silver:
-                write_value_bool(cls.push_red, False)
                 write_value_bool(cls.push_silver, True)
             write_value_bool(cls.move_conveyor_right, True)
             while not cls.box_is_down:
