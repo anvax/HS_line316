@@ -15,13 +15,17 @@ class HS:
     gripper_conveyor_sensor = 'ns=4;i=32'
 
     # output tags
-    push_box = 'ns=4;i=43'
-    fix_box_upper_side = 'ns=4;i=44'
     gripper_toggle_up_down = 'ns=4;i=39'
     gripper_open = 'ns=4;i=40'
     gripper_move_left = 'ns=4;i=38'
     gripper_move_right = 'ns=4;i=37'
     drop_puck = 'ns=4;i=41'
+    green_tag = 'ns=4;i=34'
+    yellow_tag = 'ns=4;i=35'
+
+    # output packing tags
+    push_box = 'ns=4;i=43'
+    fix_box_upper_side = 'ns=4;i=44'
 
     def __init__(self):
         print("HS created")
@@ -36,20 +40,20 @@ class HS:
     def gr_up(cls):
         # gripper up
         write_value_bool(cls.gripper_toggle_up_down, False)
-        time.sleep(1)
+        time.sleep(1.5)
 
     @classmethod
     def gr_move_puck_to_carousel(cls):
-        # drop puck
-        # "drop puck" code
-        print(1)
+
+        write_value_bool(cls.yellow_tag, False)
+        write_value_bool(cls.green_tag, True)
         write_value_bool(cls.drop_puck, True)
-        time.sleep(0.5)
+        time.sleep(0.7)
         write_value_bool(cls.drop_puck, False)
         time.sleep(0.5)
 
         write_value_bool(cls.gripper_open, True)
-        cls.gr_down(1)
+        cls.gr_down(1.5)
         write_value_bool(cls.gripper_open, False)
         time.sleep(0.3)
         cls.gr_up()
@@ -87,8 +91,9 @@ class HS:
         write_value_bool(cls.push_box, False)
         time.sleep(2)
         write_value_bool(cls.fix_box_upper_side, True)
+        time.sleep(2)
 
-        cls.gr_down(2)
+        cls.gr_down(0.6)
         write_value_bool(cls.gripper_open, True)
         time.sleep(0.3)
         cls.gr_up()
@@ -101,9 +106,9 @@ class HS:
     def gr_move_puck_to_conveyor(cls):
 
         write_value_bool(cls.gripper_open, True)
-        cls.gr_down(2)
+        cls.gr_down(2.5)
         write_value_bool(cls.gripper_open, False)
-        time.sleep(0.3)
+        time.sleep(0.6)
         cls.gr_up()
         time.sleep(1)
         # gripper move right
@@ -117,16 +122,6 @@ class HS:
         cls.gr_up()
         write_value_bool(cls.gripper_open, False)
 
-        # gripper_left_sensor = read_input_value(cls.gripper_start_sensor)
-        #
-        # write_value_bool(cls.gripper_move_left, True)
-        # while not gripper_left_sensor:
-        #     gripper_left_sensor = read_input_value(cls.gripper_start_sensor)
-        #
-        # write_value_bool(cls.gripper_move_left, False)
-        #
-        # cls.gr_move_to_conveyor = True
-
     @classmethod
     def gr_move_to_start(cls):
 
@@ -139,3 +134,5 @@ class HS:
             gripper_start_sensor = read_input_value(cls.gripper_start_sensor)
 
         write_value_bool(cls.gripper_move_left, False)
+        write_value_bool(cls.green_tag, False)
+        write_value_bool(cls.yellow_tag, True)

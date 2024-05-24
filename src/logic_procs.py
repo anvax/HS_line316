@@ -51,10 +51,13 @@ class ProcS:
                         cls.silvery = read_input_value(cls.silvery)
 
                         if cls.red_and_silvery and cls.silvery:
+                            print('Silvery')
                             write_value_bool(cls.silver_tag, True)
                         elif cls.red_and_silvery:
+                            print('Red')
                             write_value_bool(cls.red_tag, True)
                         else:
+                            print('Black')
                             write_value_bool(cls.black_tag, True)
 
                         # m5 down
@@ -75,7 +78,6 @@ class ProcS:
 
                     elif cls.counter == 5:
                         # Rotate to drill place
-                        time.sleep(0.1)
                         write_value_bool(cls.carousel_rotate, False)
                         time.sleep(1)
 
@@ -100,7 +102,7 @@ class ProcS:
                         write_value_bool(cls.carousel_rotate, True)
                         time.sleep(0.2)
                         write_value_bool(cls.carousel_rotate, False)
-                        cls.counter = 0
+                        cls.counter = -1
                         cls.rotate = False
                         cls.finished = True
                 time.sleep(0.8)
