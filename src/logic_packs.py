@@ -15,14 +15,13 @@ class PackS:
     @classmethod
     def start(cls):
         write_value_bool(cls.fix_box_tongue, True)
-        time.sleep(2)
+        time.sleep(0.5)
         write_value_bool(cls.fix_box_upper_side, False)
-        time.sleep(2)
+        time.sleep(1)
         write_value_bool(cls.pack_box, True)
         time.sleep(2)
         write_value_bool(cls.pack_box, False)
-        time.sleep(2)
+        time.sleep(0.5)
         write_value_bool(cls.fix_box_tongue, False)
-        time.sleep(2)
 
         cls.finished = 1

@@ -63,7 +63,7 @@ class HS:
         time.sleep(1)
         write_value_bool(cls.gripper_move_left, False)
         #
-        cls.gr_down(3)
+        cls.gr_down(2)
         write_value_bool(cls.gripper_open, True)
         cls.gr_up()
         write_value_bool(cls.gripper_open, False)
@@ -80,18 +80,21 @@ class HS:
 
         # gripper move right
         write_value_bool(cls.gripper_move_right, True)
-
+        t1 = 0
+        t2 = 0
         while not gripper_middle_sensor:
+            t1 = time.time()
+            t2 = time.time()
             gripper_middle_sensor = read_input_value(cls.gripper_pack_sensor)
+            print(time.time() - t2)
 
         write_value_bool(cls.gripper_move_right, False)
-
+        print(time.time()-t1)
         write_value_bool(cls.push_box, True)
-        time.sleep(2)
+        time.sleep(1)
         write_value_bool(cls.push_box, False)
-        time.sleep(2)
         write_value_bool(cls.fix_box_upper_side, True)
-        time.sleep(2)
+        time.sleep(1)
 
         cls.gr_down(0.6)
         write_value_bool(cls.gripper_open, True)
@@ -129,10 +132,12 @@ class HS:
 
         # gripper move left
         write_value_bool(cls.gripper_move_left, True)
-
+        t1 = 0
         while not gripper_start_sensor:
+            t1 = time.time()
             gripper_start_sensor = read_input_value(cls.gripper_start_sensor)
 
         write_value_bool(cls.gripper_move_left, False)
+        print(time.time()-t1)
         write_value_bool(cls.green_tag, False)
         write_value_bool(cls.yellow_tag, True)

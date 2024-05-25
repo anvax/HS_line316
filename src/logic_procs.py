@@ -71,10 +71,12 @@ class ProcS:
                             cls.hole = False
 
                         # m5 up
-                        write_value_bool(cls.m5_toggle,  False)
+                        write_value_bool(cls.m5_toggle, False)
                         time.sleep(0.5)
-                        write_value_bool(cls.carousel_rotate, True)
                         cls.counter += 1
+                        time.sleep(1)
+                        write_value_bool(cls.carousel_rotate, True)
+
 
                     elif cls.counter == 5:
                         # Rotate to drill place

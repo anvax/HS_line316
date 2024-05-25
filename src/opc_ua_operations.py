@@ -1,12 +1,11 @@
 from opcua import ua, Client
+#from asyncua import client, ua
 
 client = Client("opc.tcp://10.160.160.61:4840")
 
 
 def read_input_value(node_id):
-    client_node = client.get_node(node_id)
-    client_node_value = client_node.get_value()
-    return client_node_value
+    return client.get_node(node_id).get_value()
 
 
 def write_value_int(node_id, value):

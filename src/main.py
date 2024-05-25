@@ -62,6 +62,7 @@ async def main():
     try:
         # Подключаемся к серверу
         client.connect()
+        # asyncio.run(start())
         gripper_put_obj_on_left()
     finally:
         # disconnecting
