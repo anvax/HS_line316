@@ -25,8 +25,7 @@
  
     pip install opcua 
  
-Либо воспользоваться docker контейнером  
-    https://hub.docker.com/repository/docker/spynch/hsline316/general  
+Либо воспользоваться [docker контейнером](https://hub.docker.com/repository/docker/spynch/hsline316/general )   
 
     docker pull spynch/hsline316
 
