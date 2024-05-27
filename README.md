@@ -136,3 +136,5 @@ sorting_output_1_move_conveyor_left - включить движение конв
 sorting_output_2_push_silver_workpiece - толкатель для серебристой шайбы 
  
 sorting_output_3_push_red_workpiece - толкатель для красной шайбы
+
+> Кто дочитал до конца - держи креветку :fried_shrimp:
