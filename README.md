@@ -90,7 +90,7 @@
  
 # Тэги для ПЛК 
  
-## Левый ПЛК 
+## Proccesing station PLC
  
 processing_input_5_carousel_init - карусель в исходном состоянии 
  
@@ -114,7 +114,7 @@ processing_output_4_fix_workpiece - зафиксировать шайбу
  
 processing_output_5_detect_hole - опустить определитель дырки 
  
-## Центральный ПЛК 
+## Handling and packing station PLC
  
 handling_input_1_gripper_right - гриппер справа 
  
@@ -122,7 +122,7 @@ handling_input_2_gripper_start - гриппер над стартом
  
 handling_input_3_gripper_under_packing - гриппер над упаковщиком 
  
-## Правый ПЛК 
+## Sorting station PLC 
  
 sorting_input_3_box_is_down - коробка упала в желоб со своим цветом 
  
