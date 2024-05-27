@@ -5,6 +5,7 @@ from opc_ua_operations import *
 
 class PackS:
     finished = 0
+    # output tags
     fix_box_upper_side = 'ns=4;i=44'
     fix_box_tongue = 'ns=4;i=45'
     pack_box = 'ns=4;i=46'

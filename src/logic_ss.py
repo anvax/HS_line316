@@ -16,7 +16,6 @@ class SS:
     red_tag = 'ns=4;i=24'
     black_tag = 'ns=4;i=25'
     silver_tag = 'ns=4;i=26'
-
     # output
     move_conveyor_right = 'ns=4;i=19'
     move_conveyor_left = 'ns=4;i=20'

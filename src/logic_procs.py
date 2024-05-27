@@ -11,6 +11,7 @@ class ProcS:
     carousel_rotation = False
     M5 = False
 
+    # Color tags:
     red_tag = 'ns=4;i=24'
     silver_tag = 'ns=4;i=26'
     black_tag = 'ns=4;i=25'
@@ -42,14 +43,14 @@ class ProcS:
                 if cls.counter < 4:
                     cls.counter += 1
                 if not cls.finished and cls.counter >= 3:
+                    # rotate to color detection
                     if cls.counter == 4:
-                        # rotate to color detection
                         time.sleep(0.1)
                         write_value_bool(cls.carousel_rotate, False)
                         time.sleep(1)
                         cls.red_and_silvery = read_input_value(cls.red_and_silvery)
                         cls.silvery = read_input_value(cls.silvery)
-
+                        # color detection
                         if cls.red_and_silvery and cls.silvery:
                             print('Silvery')
                             write_value_bool(cls.silver_tag, True)
@@ -64,7 +65,7 @@ class ProcS:
                         write_value_bool(cls.m5_toggle, True)
                         time.sleep(0.5)
                         cls.M5 = read_input_value(cls.m5_tag)
-
+                        # hole detection
                         if cls.M5:
                             cls.hole = True
                         else:
@@ -79,13 +80,13 @@ class ProcS:
 
 
                     elif cls.counter == 5:
-                        # Rotate to drill place
+                        # rotate to drill place
                         write_value_bool(cls.carousel_rotate, False)
                         time.sleep(1)
 
                         # drill the puck
                         if cls.hole:
-                            # drill
+                            # drilling
                             write_value_bool(cls.m4_toggle, True)
                             time.sleep(0.1)
                             write_value_bool(cls.drill_down, True)
